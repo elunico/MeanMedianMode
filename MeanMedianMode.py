@@ -23,8 +23,19 @@ class MeanMedianMode:
     def data(self):
         return self._data 
 
-    def update(self, *values):
+    def add(self, *values):
         self._data.extend(values)
+        self.invalidate_caches()
+    
+    def pop(self, index=-1):
+        self._data.pop(index)
+        self.invalidate_caches()
+    
+    def prepend(self, *values):
+        self._data = values + self._data 
+        self.invalidate_caches()
+
+    def invalidate_caches(self):
         self.mode.cache_clear()
         self.median.cache_clear()
         self.mean.cache_clear()
@@ -68,5 +79,5 @@ print(MeanMedianMode(list(range(1,11)) + [1]).results())
 
 a = MeanMedianMode([1,2,3])
 print(a.results())
-a.update(3, 4, 5)
+a.add(3, 4, 5)
 print(a.results())
